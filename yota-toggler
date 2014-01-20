@@ -17,4 +17,4 @@ productId=${productId#*value=\"}
 productId=${productId%\" />}
 
 # TODO: подтверждение переключения
-$CURL_CMD -d "product=$productId" -d "offerCode=$OFFER" -d "areOffersAvailable=false" -d "status=custom" -d "isSlot=false" -d "currentDevice=1" -d "isDisablingAutoprolong=true" https://my.yota.ru/selfcare/devices/changeOffer > /dev/null
+$CURL_CMD -d "product=$productId" -d "offerCode=$OFFER" -d "areOffersAvailable=false" -d "status=custom" -d "isSlot=false" -d "currentDevice=1" -d "isDisablingAutoprolong=false" https://my.yota.ru/selfcare/devices/changeOffer > /dev/null
