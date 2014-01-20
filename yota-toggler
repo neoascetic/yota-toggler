@@ -1,10 +1,12 @@
 #!/bin/bash
 
-source settings.ini
+DIRNAME=$(dirname $0)
+
+source "$DIRNAME/settings.ini"
 
 [[ $1 = "min" ]] && OFFER=$OFFER_MIN || OFFER=$OFFER_NORM
 
-COOKIE_PATH="cookie.jar"
+COOKIE_PATH="$DIRNAME/cookie.jar"
 CURL_CMD="curl --location --silent --cookie $COOKIE_PATH --cookie-jar $COOKIE_PATH"
 
 devicesPage=$($CURL_CMD -d "IDToken1=$LOGIN" -d "IDToken2=$PASSWORD" -d "IDToken3=$PASSWORD" -d "goto=https://my.yota.ru/selfcare/loginSuccess" -d "org=customer" https://login.yota.ru/UI/Login)
