@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source settings.ini
+
+[[ $1 = "min" ]] && OFFER=$OFFER_MIN || OFFER=$OFFER_NORM
+
+COOKIE_PATH="cookie.jar"
+CURL_CMD="curl --location --silent --cookie $COOKIE_PATH --cookie-jar $COOKIE_PATH"
+
+devicesPage=$($CURL_CMD -d "IDToken1=$LOGIN" -d "IDToken2=$PASSWORD" -d "IDToken3=$PASSWORD" -d "goto=https://my.yota.ru/selfcare/loginSuccess" -d "org=customer" https://login.yota.ru/UI/Login)
+
+# TODO: оптимизировать
+productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep 'name="product"')
+productId=${productId#*value=\"}
+productId=${productId%\" />}
+
+# TODO: подтверждение переключения
+$CURL_CMD -d "product=$productId" -d "offerCode=$OFFER" -d "areOffersAvailable=false" -d "status=custom" -d "isSlot=false" -d "currentDevice=1" -d "isDisablingAutoprolong=true" https://my.yota.ru/selfcare/devices/changeOffer > /dev/null
