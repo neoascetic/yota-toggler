@@ -22,3 +22,7 @@ yota-toggler
 
 2. Вызвать `yota-toggler` для включения обычного тарифа или `yota-toggler min`
    для включения минимального
+
+
+
+Лицензировано под [![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png)](http://www.wtfpl.net/).
