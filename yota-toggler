@@ -7,7 +7,7 @@ CURL_CMD="curl --location --silent --cookie $COOKIE_PATH --cookie-jar $COOKIE_PA
 source "$DIRNAME/settings.ini"
 
 [[ $1 = "min" ]] && OFFER=$OFFER_MIN || OFFER=$OFFER_NORM
-[[ -n "$ERR_HANDLER" ]] && trap '[[ $? != 0 ]] && $ERR_HANDLER' ERR INT
+[[ -n "$ERR_HANDLER" ]] && trap '[[ $? != 0 ]] && eval "$ERR_HANDLER"' ERR INT
 
 # # #
 
