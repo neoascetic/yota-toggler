@@ -1,20 +1,39 @@
-#!/bin/bash
+#!/bin/bash -e
 
 DIRNAME=$(dirname $0)
+COOKIE_PATH="$DIRNAME/cookie.jar"
+CURL_CMD="curl --location --silent --cookie $COOKIE_PATH --cookie-jar $COOKIE_PATH"
 
 source "$DIRNAME/settings.ini"
 
 [[ $1 = "min" ]] && OFFER=$OFFER_MIN || OFFER=$OFFER_NORM
+[[ -n "$ERR_HANDLER" ]] && trap '[[ $? != 0 ]] && $ERR_HANDLER' ERR INT
 
-COOKIE_PATH="$DIRNAME/cookie.jar"
-CURL_CMD="curl --location --silent --cookie $COOKIE_PATH --cookie-jar $COOKIE_PATH"
+# # #
 
-devicesPage=$($CURL_CMD -d "IDToken1=$LOGIN" -d "IDToken2=$PASSWORD" -d "IDToken3=$PASSWORD" -d "goto=https://my.yota.ru/selfcare/loginSuccess" -d "org=customer" https://login.yota.ru/UI/Login)
+$CURL_CMD\
+    -d "IDToken1=$LOGIN"\
+    -d "IDToken2=$PASSWORD"\
+    -d "IDToken3=$PASSWORD"\
+    -d "goto=https://my.yota.ru/selfcare/loginSuccess"\
+    -d "org=customer"\
+    https://login.yota.ru/UI/Login > /dev/null
 
-# TODO: оптимизировать
-productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep 'name="product"')
-productId=${productId#*value=\"}
-productId=${productId%\" />}
+productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep -Eo 'name="product" value="\d+"' | grep -Eo '\d+')
 
-# TODO: подтверждение переключения
-$CURL_CMD -d "product=$productId" -d "offerCode=$OFFER" -d "areOffersAvailable=false" -d "status=custom" -d "isSlot=false" -d "currentDevice=1" -d "isDisablingAutoprolong=false" https://my.yota.ru/selfcare/devices/changeOffer > /dev/null
+[[ -z $productId ]] && exit 1
+
+# TODO: всамоделешнее подтверждение переключения
+isOfferChanged=$($CURL_CMD\
+    -d "product=$productId"\
+    -d "offerCode=$OFFER"\
+    -d "areOffersAvailable=false"\
+    -d "status=custom"\
+    -d "isSlot=false"\
+    -d "currentDevice=1"\
+    -d "isDisablingAutoprolong=false"\
+    https://my.yota.ru/selfcare/devices/changeOffer | grep -o "offerDisabled")
+
+[[ -z $isOfferChanged ]] && exit 1
+
+exit 0

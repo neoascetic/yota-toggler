@@ -14,15 +14,18 @@ yota-toggler
     PASSWORD="пароль"
     OFFER_MIN="идентификатор минимального тарифа"
     OFFER_NORM="идентификатор обычного тарифа"
+
+    ERR_HANDLER="команда, которая будет выполнена при ошибке"
     ```
 
    Идентификаторы тарифов можно подсмотреть в средствах разработчика в
    каком-нибудь браузере при смене тарифа в личном кабинете. Это POST-запрос на
-   `changeOffer`, поле `offerCode`.
+   `changeOffer`, поле `offerCode`. Он выглядит наподобии такого:
+   `POS-MA14-0002`.
 
 2. Вызвать `yota-toggler` для включения обычного тарифа или `yota-toggler min`
    для включения минимального
 
 
 
-Лицензировано под [![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png)](http://www.wtfpl.net/).
+Лицензировано под [![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png)](http://www.wtfpl.net/)
