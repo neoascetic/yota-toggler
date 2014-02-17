@@ -19,7 +19,7 @@ $CURL_CMD\
     -d "org=customer"\
     https://login.yota.ru/UI/Login > /dev/null
 
-productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep -Eo 'name="product" value="\d+"' | grep -Eo '\d+')
+productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep -Eo 'name="product" value="[0-9]+"' | grep -Eo '[0-9]+')
 
 [[ -z $productId ]] && exit 1
 
