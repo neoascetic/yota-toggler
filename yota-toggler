@@ -35,7 +35,6 @@ trap 'exitHandler $?' EXIT
 $CURL_CMD\
     -d "IDToken1=$LOGIN"\
     -d "IDToken2=$PASSWORD"\
-    -d "IDToken3=$PASSWORD"\
     -d "goto=https://my.yota.ru/selfcare/loginSuccess"\
     -d "org=customer"\
     https://login.yota.ru/UI/Login > /dev/null
