@@ -18,13 +18,14 @@ if [[ $1 = "min" ]]; then
 fi
 
 if [[ ! "$ERR_HANDLER" ]]; then
-    ERR_HANDLER="echo $1"
+    ERR_HANDLER="echo $ERROR_MSG"
 fi
 
 function exitHandler() {
     rm "$COOKIE_PATH"
     if [[ $1 != 0 ]]; then
-        eval "$ERR_HANDLER" "${ERROR_MSGS[$1]}"
+        local ERR_MSG="${ERROR_MSGS[$1]}"
+        eval "$ERR_HANDLER"
     fi
 }
 
