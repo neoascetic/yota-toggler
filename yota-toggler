@@ -8,28 +8,7 @@ CURL_CMD="curl --location --silent --cookie $COOKIE_PATH --cookie-jar $COOKIE_PA
 
 source "$DIRNAME/settings.ini"
 
-declare -A ERROR_MSGS
-ERROR_MSGS[1]="Не могу получить productId!"
-ERROR_MSGS[2]="Не могу переключить тариф!"
-
-OFFER=$OFFER_NORM
-if [[ $1 = "min" ]]; then
-    OFFER=$OFFER_MIN
-fi
-
-if [[ ! "$ERR_HANDLER" ]]; then
-    ERR_HANDLER="echo $ERROR_MSG"
-fi
-
-function exitHandler() {
-    rm "$COOKIE_PATH"
-    if [[ $1 != 0 ]]; then
-        local ERR_MSG="${ERROR_MSGS[$1]}"
-        eval "$ERR_HANDLER"
-    fi
-}
-
-trap 'exitHandler $?' EXIT
+[[ $1 = "min" ]] && OFFER="$OFFER_MIN" || OFFER="$OFFER_NORM"
 
 # # #
 
@@ -42,7 +21,7 @@ $CURL_CMD\
 
 productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep -Eo 'name="product" value="[0-9]+"' | grep -Eo '[0-9]+')
 
-[[ -z $productId ]] && exit 1
+[[ -z $productId ]] && echo "Не могу получить productId!" && exit 1
 
 # TODO: всамоделешнее подтверждение переключения
 isOfferChanged=$($CURL_CMD\
@@ -55,6 +34,4 @@ isOfferChanged=$($CURL_CMD\
     -d "isDisablingAutoprolong=false"\
     https://my.yota.ru/selfcare/devices/changeOffer | grep -o "offerDisabled")
 
-[[ -z $isOfferChanged ]] && exit 2
-
-exit 0
+[[ -z $isOfferChanged ]] && echo "Не могу переключить тариф!" && exit 2
