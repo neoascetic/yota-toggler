@@ -1,4 +1,4 @@
-yota-toggler
+yota-toggler [![](https://img.shields.io/badge/license-WTFPL-green.svg?style=flat-square)](http://www.wtfpl.net/)
 ============
 
 Простейший скрипт для переключения Yota между минимальным и обычным (выбранным
@@ -23,7 +23,3 @@ yota-toggler
 
 2. Вызвать `yota-toggler` для включения обычного тарифа или `yota-toggler min`
    для включения минимального
-
-
-
-Лицензировано под [![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png)](http://www.wtfpl.net/)
