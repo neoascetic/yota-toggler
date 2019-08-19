@@ -19,7 +19,11 @@ $CURL_CMD\
     -d "org=customer"\
     https://login.yota.ru/UI/Login > /dev/null
 
-productId=$($CURL_CMD https://my.yota.ru/selfcare/devices | grep -Eo 'name="product" value="[0-9]+"' | grep -Eo '[0-9]+')
+# Если устройств несколько
+unset productIdArr
+productIdArr=( $($CURL_CMD https://my.yota.ru/selfcare/devices | grep -Eo 'name="product" value="[0-9]+"' | grep -Eo '[0-9]+') )
+
+productId=${productIdArr[$2]}
 
 [[ -z $productId ]] && echo "Не могу получить productId!" && exit 1
 
